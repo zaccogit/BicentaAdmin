@@ -1,18 +1,17 @@
 "use client";
 import ModalEditText from "@/components/common/ModalEditText";
-import Layout from "@/components/layout/Layout";
 import { useRender } from "@/context/render/renderProvider";
 import { useStore } from "@/context/storeContext/StoreProvider";
 import {
   Intention,
+  UserExpresion,
   UserResponse,
   channelsType,
 } from "@/lib/interface.intentions";
 import { ToastCall } from "@/utils/GeneralMetods";
 import axios from "axios";
-import { Metadata } from "next";
 import Image from "next/image";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { AiFillInstagram, AiFillSound } from "react-icons/ai";
 import {
@@ -81,9 +80,7 @@ type typeMultimedia = "Voices" | "Animations" | "Multimedias" | "Video";
 
 import React from "react";
 
-function ModalTrainingStep2() {
-  const pathname = usePathname().split("/");
-  const router = useRouter();
+function ModalTrainingStep2({name,userExpe,handleSubmit, idTraining}:{name:string,userExpe:UserExpresion,handleSubmit:() => void,idTraining:string | number}) {
   const { Intentions, setIntentions } = useStore();
   const { setLoader } = useRender();
   const [modal, setModal] = useState(false);
@@ -282,8 +279,9 @@ function ModalTrainingStep2() {
     setLoader(true);
     try {
       console.log(Data);
-      const response = await axios.post("/api/response", {
-        intention: Data,
+      const response = await axios.post("/api/AllinOne", {
+        intentionName: name,
+        userExpresion:userExpe,
         userResponse: {
           ...DataRes,
           channelVoices: ChannelVoices,
@@ -291,6 +289,7 @@ function ModalTrainingStep2() {
           channelAnimations: ChannelAnimations,
           channelVideos: ChannelVideos,
         },
+        idTraining
       });
 
       console.log(response);
@@ -304,7 +303,8 @@ function ModalTrainingStep2() {
         })
       );
 
-      router.back();
+      handleSubmit()
+
 
       ToastCall("success", "Estimulos guardados con exito ");
     } catch (error: any) {
@@ -319,14 +319,6 @@ function ModalTrainingStep2() {
     }
   };
 
-  useEffect(() => {
-    const tintent = Intentions.find(
-      (e) => e.id === Number(pathname[pathname.length - 1])
-    );
-    if (tintent) {
-      setData(tintent);
-    }
-  }, []);
 
   useEffect(() => {
     console.log(Data);
@@ -532,8 +524,8 @@ function ModalTrainingStep2() {
 
               {DataRes?.multimediaVideoUrl ? (
                 <>
-                  <div className=" flex min-h-[45vh] justify-center items-center ">
-                    <video width="1080" height="1080" controls>
+                  <div className=" flex min-h-[30vh] justify-center items-center ">
+                    <video width="540" height="540" className=" w-[65%]" controls>
                       <source
                         src={DataRes?.multimediaVideoUrl}
                         type="video/mp4"
@@ -681,8 +673,8 @@ function ModalTrainingStep2() {
             </label>
             {DataRes?.saraAnimationUrl ? (
               <>
-                <div className=" flex min-h-[45vh] justify-center items-center ">
-                  <figure>
+                <div className=" flex min-h-[30vh] justify-center items-center ">
+                  <figure className=" w-[65%]">
                     <Image
                       src={DataRes.saraAnimationUrl}
                       alt="Shoes"
@@ -833,13 +825,13 @@ function ModalTrainingStep2() {
             </label>
             {DataRes?.multimediaUrl ? (
               <>
-                <div className=" flex min-h-[45vh] justify-center items-center ">
-                  <figure>
+                <div className=" flex min-h-[30vh] justify-center items-center ">
+                  <figure className=" w-[65%]">
                     <Image
                       src={DataRes.multimediaUrl}
                       alt="Shoes"
-                      width={1080}
-                      height={1080}
+                      width={540}
+                      height={540}
                     />
                   </figure>
                 </div>
@@ -962,8 +954,26 @@ function ModalTrainingStep2() {
             )}
           </div>
         </div>
+        
         <ModalEditText modal={modal} setModal={setModal} data={DataRes} setData={setDataRes}/>
       </main>
+
+      <div className=" flex justify-end py-2">
+
+      <div
+                className="tooltip"
+                data-tip="Siguiente"
+              >
+                <button
+                  className={
+                     " btn btn-lg btn-info  "
+                  }
+                  onClick={onSubmitData}
+                >
+                  Guardar
+                </button>
+              </div>
+      </div>
     </div>
   );
 }

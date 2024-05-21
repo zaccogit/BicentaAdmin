@@ -20,6 +20,17 @@ const InteractionTable = () => {
     const [Intent, setIntent] = useState<Intention>()
     const { setLoader } = useRender()
 
+      //Pagination
+      const itemsPerPage = 10;
+      const [activePage, setActivePage] = useState(1)
+      const handlePageChange = (pageNumber:any)=>{
+        setActivePage(pageNumber)
+      }
+
+      const totalPages = Math.ceil(Intentions.length / itemsPerPage);
+      const startIndex = (activePage - 1) * itemsPerPage;
+      const currentItems = Intentions.slice(startIndex, startIndex + itemsPerPage);
+
     const deleteData = async (e: Intention) => {
       setLoader(true)
       try {
@@ -98,13 +109,6 @@ const InteractionTable = () => {
           
         },
       ];
-    
-
-      //Pagination
-      const [activePage, setActivePage] = useState(1)
-      const handlePageChange = (pageNumber:any)=>{
-        setActivePage(pageNumber)
-      }
 
       useEffect(() => {
         (async () => {
@@ -131,20 +135,18 @@ const InteractionTable = () => {
 
     return (
         <>
-        <Table columns={columns} data={Intentions} rowKey={data => data.id}  className='rounded-lg border border-gray-100 py-3 shadow-sm rc-table-custom'/>
+        <Table columns={columns} data={currentItems} rowKey={data => data.id}  className='rounded-lg border border-gray-100 py-3 shadow-sm rc-table-custom'/>
         <Pagination
           activePage={activePage}
-          itemsCountPerPage={10}
-          totalItemsCount={450}
-          pageRangeDisplayed={5}
+          itemsCountPerPage={itemsPerPage}
+          totalItemsCount={Intentions.length}
+          pageRangeDisplayed={totalPages}
           onChange={handlePageChange}
-          nextPageText={'Next'}
-          prevPageText={'Prev'}
-          firstPageText={'First'}
-          lastPageText={'Last'}
+          nextPageText={"Sig"}
+          prevPageText={"Prev"}
           innerClass="js-ul"
-          itemClass='js-li'
-          linkClass='page-link'
+          itemClass="js-li"
+          linkClass="page-link"
         />
         <ModalUserExpresions  modal={modal} setModal={setModal} headerTitle={"Estimulo"} data={Intent} />
         <ModalUserResponse  modal={modal2} setModal={setModal2} headerTitle={"Respuestas"} data={Intent}/>

@@ -7,7 +7,7 @@ import { AiFillSound } from "react-icons/ai";
 import { PiGifFill } from "react-icons/pi";
 import Image from "next/image";
 import Link from "next/link";
-import { Intention, Training } from "@/lib/interface.intentions";
+import { Intention, Training, UserExpresion } from "@/lib/interface.intentions";
 import { IoMdAdd, IoMdAddCircle } from "react-icons/io";
 import { useStore } from "@/context/storeContext/StoreProvider";
 import axios from "axios";
@@ -68,6 +68,13 @@ const ModalTraining = ({
           // find the first step that has been completed
           steps.findIndex((step, i) => !(i in completed))
         : activeStep + 1;
+
+        if (activeStep === 1 && newActiveStep === 2) {
+          if (!name) {
+            ToastCall("warning", "Elige un nombre para la Intenración");
+            return;
+          }
+        }
     setActiveStep(newActiveStep);
   };
 
@@ -76,24 +83,24 @@ const ModalTraining = ({
   };
 
   const handleStep = (step: number) => () => {
-    if(activeStep === 1 && step === 2){
-      if(!name){
+    if (activeStep === 1 && step === 2) {
+      if (!name) {
         ToastCall("warning", "Elige un nombre para la Intenración");
-        return
+        return;
       }
     }
     setActiveStep(step);
   };
 
   const handleComplete = () => {
+    handleNext();
     const newCompleted = completed;
     newCompleted[activeStep] = true;
     setCompleted(newCompleted);
-    handleNext();
   };
 
-  const infoExpresion = {
-    value: data?.value,
+  const infoExpresion:UserExpresion = {
+    value: data?.value as string,
     priority: "LOW",
     intents: [],
   };
@@ -101,6 +108,9 @@ const ModalTraining = ({
   const handleSubmit = () => {
     setModal(false);
     setIntention(undefined);
+    setName("")
+    setCompleted({})
+    setActiveStep(0)
     inputRef.current && inputRef.current.classList.remove("modal-open");
   };
 
@@ -217,7 +227,7 @@ const ModalTraining = ({
                   </div>
                 ))}
                 <div
-                  onClick={handleStep(1)}
+                  onClick={handleComplete}
                   className={
                     " border card w-64 bg-blue-100 shadow-xl hover:bg-blue-200 active:bg-blue-300 cursor-pointer transition-all"
                   }
@@ -269,28 +279,57 @@ const ModalTraining = ({
             <div className="modal-content px-6 space-y-4">
               <div className=" h-[10vh]"></div>
               <div className=" flex justify-center ">
-                <h2 className=" text-2xl">Nombre de la Intención que quieres crear</h2>
+                <h2 className=" text-2xl">
+                  Nombre de la Intención que quieres crear
+                </h2>
               </div>
               <div className=" flex justify-center">
-
-              <div className="flex flex-col w-1/3">
-              {/* <label className="font-semibold pr-2">Nombre</label> */}
-              <input
-                className="input input-bordered w-full input-primary"
-                type="text"
-                placeholder="Saludo"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
+                <div className="flex flex-col w-1/3">
+                  {/* <label className="font-semibold pr-2">Nombre</label> */}
+                  <input
+                    className="input input-bordered w-full input-primary"
+                    type="text"
+                    placeholder="Saludo"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+                <div
+                className=" absolute bottom-2 left-2  tooltip"
+                data-tip={
+                  data && data?.value.length > 60
+                    ? data?.value.slice(0, 60) + "..."
+                    : data?.value
+                }
+              >
+                <span className="font-bold">
+                  {" "}
+                  El Estimulo seleccionado para entrenar es:
+                </span>
+                <p>
+                  {data && data?.value.length > 60
+                    ? data?.value.slice(0, 60) + "..."
+                    : data?.value}
+                </p>
+              </div>
+              <div
+                className="absolute bottom-2 right-2 tooltip"
+                data-tip="Siguiente"
+              >
+                <button
+                  className={
+                     " btn btn-lg btn-info  "
+                  }
+                  onClick={handleComplete}
+                >
+                  Siguiente
+                </button>
+              </div>
               </div>
             </div>
           ) : null}
 
-          {activeStep === 2 ? (
-            <ModalTrainingStep2 />
-          ) : null}
-
+          {activeStep === 2 ? <ModalTrainingStep2 name={name} userExpe={infoExpresion} handleSubmit={handleSubmit} idTraining={data?.id as number} /> : null}
         </div>
         <style jsx>{`
           .modal-overlay {
