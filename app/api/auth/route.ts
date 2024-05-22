@@ -11,6 +11,7 @@ export async function POST(request: Request) {
     const response = await axios.post(host+url, { username:usernameOREmail, password, remember: true });
     if (response.data) {
       cookies().set("sesion", response.data.id_token, { httpOnly: true });
+      cookies().set("dateSesion", new Date().toISOString(), { httpOnly: true });
     }
 
     return Response.json({token:response.data.id_token});

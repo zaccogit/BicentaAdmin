@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export function generateUniqueId() {
   const timestamp = Date.now().toString(36); // Convertir la marca de tiempo actual a base36
   const randomStr = Math.random().toString(36).substr(2, 5); // Generar un número aleatorio y convertirlo a base36
@@ -53,4 +55,17 @@ export function eliminarObjetosDuplicados(array: any[]) {
   });
 
   return arraySinDuplicados;
+}
+
+export function validarTokenDate(givenDate:string):boolean {
+  // Convertir la fecha proporcionada a un objeto Moment
+  const date = moment(givenDate); 
+  // Obtener la fecha y hora actual como objeto Moment
+  const now = moment();
+
+  // Calcular la diferencia en horas
+  const differenceInHours = now.diff(date, 'hours');
+
+  // Verificar si han pasado 12 horas
+  return differenceInHours >= 12;
 }

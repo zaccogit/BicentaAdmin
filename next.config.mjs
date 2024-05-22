@@ -6,7 +6,7 @@ const nextConfig = {
     },
     env: {
       API: 'https://bankbot.zaccoapp.com:2626',
-      API_OWN: 'https://localhost:3000/',
+      API_OWN: 'http://localhost:3000',
     },
   };
 

@@ -1,3 +1,4 @@
+'use client'
 import React, { useEffect, useRef, useState } from "react";
 import { generateUniqueId } from "../../utils/helpers";
 import {info} from "../../utils/dataDummy";
@@ -6,8 +7,13 @@ import { AiFillSound } from "react-icons/ai";
 import { PiGifFill } from "react-icons/pi";
 import Image from "next/image";
 import Link from "next/link";
-import { Intention } from "@/lib/interface.intentions";
+import { Intention, UserResponse } from "@/lib/interface.intentions";
 import { IoMdAdd } from "react-icons/io";
+import { MdDeleteForever } from "react-icons/md";
+import axios from "axios";
+import { ToastCall } from "@/utils/GeneralMetods";
+import { useRender } from "@/context/render/renderProvider";
+import { useStore } from "@/context/storeContext/StoreProvider";
 
 type ModalUserResponse = {
   modal: boolean;
@@ -21,14 +27,56 @@ const ModalUserResponse = ({ modal, setModal, headerTitle,data }:ModalUserRespon
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const inputRef = useRef<HTMLDialogElement | null>(null);
+  const { setLoader} = useRender()
+  const [Data, setData] = useState<UserResponse[]>([])
+  const { Intentions, setIntentions } = useStore()
+
+  const deleteExpresionDef = async (e: UserResponse) => {
+    setLoader(true)
+    try {
+      const response = await axios.post("/api/response/"+e.id,{
+        intention:data
+      });
+
+      setIntentions(
+        Intentions.map((objeto) => {
+          if (objeto.id === response.data.id) {
+            return response.data;
+          }
+          return objeto;
+        })
+      );
+
+      setData(
+        Data.filter(ele => ele.id.toString() !== e.id.toString())
+      )
+
+      /* dataCopy2 && setUserExpresions(dataCopy2.filter(ele => e.id !== ele.id))
+      dataCopy2 && setdataCopy2(dataCopy2.filter(ele => e.id !== ele.id)) */
+
+      ToastCall("success", "Eliminado con exito ");
+    } catch (error: any) {
+      console.log(error, "aqui");
+      if (error.status === 400) {
+        ToastCall("error", "Usuario o Contraseña invalida");
+        return;
+      }
+      ToastCall("error", error);
+    } finally {
+      setLoader(false);
+    }
+  };
+  
 
   const handleSubmit = () => {
     setModal(false);
+    setData([])
     inputRef.current && inputRef.current.classList.remove("modal-open");
   };
 
   useEffect(() => {
     if (modal) {
+      setData(data?.userResponses as UserResponse[])
       inputRef.current && inputRef.current.classList.add("modal-open");
     }
     console.log(data?.id, "ESTE");
@@ -52,8 +100,14 @@ const ModalUserResponse = ({ modal, setModal, headerTitle,data }:ModalUserRespon
 
           <div className="modal-content px-6 py-4 space-y-4">
             <div className="flex flex-wrap gap-4">
-              {data?.userResponses.map((e) => (
-                <div key={e.id} className="card w-64 bg-base-100 shadow-xl">
+              {Data.map((e) => (
+                <div key={e.id} className="card w-64 bg-base-100 shadow-xl relative">
+                   <button
+                  className=" btn btn-error absolute right-2"
+                  onClick={() => deleteExpresionDef(e)}
+                >
+                  <MdDeleteForever size={24} />
+                </button>
                   <figure>
                     {e.multimediaUrl && <Image src={e.multimediaUrl} alt="Shoes" width={1080} height={1080}/>}
                     

@@ -54,7 +54,6 @@ export const createIntentions = async (name:string) => {
 
 
 export const LogOut = async () => {
-    
     try {
       const response = await axios.delete("/api/auth");
       console.log(response.data);     
