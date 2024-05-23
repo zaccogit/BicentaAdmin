@@ -81,7 +81,7 @@ type typeMultimedia = "Voices" | "Animations" | "Multimedias" | "Video";
 import React from "react";
 
 function ModalTrainingStep2({name,userExpe,handleSubmit, idTraining}:{name:string,userExpe:UserExpresion,handleSubmit:() => void,idTraining:string | number}) {
-  const { Intentions, setIntentions } = useStore();
+  const { Intentions, setIntentions, setTrainings, Trainings} = useStore();
   const { setLoader } = useRender();
   const [modal, setModal] = useState(false);
   const [Data, setData] = useState<Intention | undefined>();
@@ -302,6 +302,8 @@ function ModalTrainingStep2({name,userExpe,handleSubmit, idTraining}:{name:strin
           return objeto;
         })
       );
+
+      setTrainings(Trainings.filter((objeto) => objeto.id !== idTraining));
 
       handleSubmit()
 
