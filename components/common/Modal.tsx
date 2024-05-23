@@ -38,6 +38,7 @@ const Modal = ({ modal, setModal, headerTitle }:any) => {
 
   const handleSubmit = () => {
     setModal(false);
+    setName("")
     inputRef.current && inputRef.current.classList.remove("modal-open");
   };
 

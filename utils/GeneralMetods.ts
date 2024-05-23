@@ -5,6 +5,7 @@ type TypeToast = "success" | "error" | "warning";
 
 export const ToastCall = (type: TypeToast, message: string) => {
   console.log("no entiendo")
+  console.log("no entiendo!!")
   toast[type](message, {
     position: "top-center",
     autoClose: 3000,

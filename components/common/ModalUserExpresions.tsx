@@ -84,13 +84,15 @@ const ModalUserExpresions = ({
         name,
       });
 
+
+      
       if (response.data.length) {
-        console.log(response);
+        
         ToastCall(
           "warning",
-          "La palabra " + '"' + name + '"' + "  ya esta usada. /n"
-          +(response.data.intents.length && "La Interacción es" + response.data[0].intents.name )
-        );
+          `La palabra "${name}" ya esta usada. La Interacción es "${ response.data[0].intents[0].name}"`
+        );  
+
         return;
       }
 
