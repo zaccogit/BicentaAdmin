@@ -46,7 +46,7 @@ body {
   li.js-li.active {
     color: white;
     font-weight: 700;
-    background: #A32135;
+    background: #2B3C84;
     border-radius: 6px;
   }
 
@@ -85,7 +85,7 @@ body {
   display: block;
   width: 25%;
   height: 25%;
-  background-color: #A32135;
+  background-color: #2B3C84;
   border-radius: 100%;
   animation: sk-chase-dot-before 2.0s infinite ease-in-out both; 
 }

@@ -9,11 +9,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#A32135",
+        primary: "#2B3C84",
 
-        secondary: "#831b2b",
+        secondary: "#2b3ccb",
 
-        accent: "#d5344c",
+        accent: "#2b3cec",
 
         complement: "#f4f0fa",
 
@@ -35,11 +35,11 @@ const config: Config = {
     themes: [
       {
         mytheme: {
-          primary: "#A32135",
+          primary: "#2B3C84",
 
-          secondary: "#831b2b",
+          secondary: "#2b3ccb",
   
-          accent: "#d5344c",
+          accent: "#2b3cec",
   
           complement: "#f4f0fa",
   
