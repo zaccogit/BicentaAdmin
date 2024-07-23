@@ -4,13 +4,12 @@ import React, { useContext, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { ToastCall } from "@/utils/GeneralMetods";
 import axios from "axios";
-import bicenta from "../../images/bicenta.png";
 import { useRouter } from 'next/navigation'
 import "react-toastify/dist/ReactToastify.css";
 import { useRender } from "@/context/render/renderProvider";
 import FormLogin from "@/components/login/FormLogin";
 import { Metadata } from "next";
-
+import env from "../../utils"
 export const metadata: Metadata = {
   title: "Login",
   description: "Inicio de sesión de la app",
@@ -31,7 +30,7 @@ function Login() {
               <div className="w-full">
                 <div className="relative block bg-primary rounded-lg">
                   <span className="inline-flex items-center justify-center w-full">
-                    <Image src={bicenta} alt="Bicenta" className="w-64" width={1080} height={1080}></Image>
+                    <Image src={env.IMG_HOME_URL} alt={env.NOMBRE} className="w-64" width={1080} height={1080}></Image>
                   </span>
                 </div>
                 <FormLogin/>

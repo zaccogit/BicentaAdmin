@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import env from "./utils";
 
 const config: Config = {
   content: [
@@ -9,11 +10,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#2B3C84",
+        primary: env.PRIMARY,
 
-        secondary: "#2b3ccb",
+        secondary: env.SECONDARY ,
 
-        accent: "#2b3cec",
+        accent: env.ACCENT,
 
         complement: "#f4f0fa",
 
@@ -35,11 +36,11 @@ const config: Config = {
     themes: [
       {
         mytheme: {
-          primary: "#2B3C84",
+          primary: env.PRIMARY,
 
-          secondary: "#2b3ccb",
+          secondary: env.SECONDARY ,
   
-          accent: "#2b3cec",
+          accent: env.ACCENT,
   
           complement: "#f4f0fa",
   

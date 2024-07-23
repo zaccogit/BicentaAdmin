@@ -1,15 +1,16 @@
 'use client'
 import { createTheme } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
+import env from '.';
 
 // Create a theme instance.
 const theme = createTheme({
     palette: {
       primary: {
-        main: '#2B3C84',
+        main: env.PRIMARY,
       },
       secondary: {
-        main: '#2b3ccb',
+        main: env.SECONDARY,
       },
       error: {
         main: red.A400,

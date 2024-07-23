@@ -4,6 +4,7 @@ import axios from "axios";
 import { cookies } from "next/headers";
 import { LuBrain } from "react-icons/lu";
 import ChartDashboard from "./ChartDashboard";
+import env from "../../utils/index"
 
 const Dashboard = async () => {
   const token = cookies().get("sesion");
@@ -101,7 +102,7 @@ const Dashboard = async () => {
         <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
           <div className="mr-6">
             <h1 className="text-4xl font-semibold mb-2">Dashboard</h1>
-            <h2 className="text-gray-600 ml-0.5">Admin Bicenta</h2>
+            <h2 className="text-gray-600 ml-0.5">Admin {env.NOMBRE}</h2>
           </div>
         </div>
         <section className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
