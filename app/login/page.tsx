@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useRender } from "@/context/render/renderProvider";
 import FormLogin from "@/components/login/FormLogin";
 import { Metadata } from "next";
+import background from '../../images/background.svg'
 
 export const metadata: Metadata = {
   title: "Login",
@@ -21,7 +22,7 @@ function Login() {
 
   return (
     <>
-      <div className=" bg-secondary ">
+      <div className=" bg-secondary bg-custom-image ">
         <div className=" dark:bg-gray-900 h-screen flex items-center ">
           <div className=" flex justify-center rounded-xl w-full h-2/3">
             <main

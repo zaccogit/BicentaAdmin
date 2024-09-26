@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    output: 'standalone',
     reactStrictMode: true,
     images:{
       domains:['images.unsplash.com', 'via.placeholder.com', 'randomuser.me',"bankbot.zaccoapp.com:2626","bankbot.zaccoapp.com"],

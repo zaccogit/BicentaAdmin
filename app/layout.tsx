@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Lato } from "next/font/google";
 import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { ThemeProvider } from "@mui/material/styles";
@@ -9,7 +9,11 @@ import StoreProvider from "@/context/storeContext/StoreProvider";
 import RenderProvider from "@/context/render/renderProvider";
 import Loading from "@/components/layout/Loading";
 
-const inter = Inter({ subsets: ["latin"] });
+const lato = Lato({
+  subsets: ["latin"],
+  weight: ["400", "700"], // Especifica los pesos que necesitas
+  style: ["normal", "italic"], // Especifica los estilos si es necesario
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={inter.className+ "overflow-hidden"} >
+      <body className={lato.className+ "overflow-hidden"} >
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <RenderProvider>
